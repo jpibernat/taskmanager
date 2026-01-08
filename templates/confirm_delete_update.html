@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Delete Update</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container py-4">
+
+  {% include 'navbar.html' %}
+
+  <h1>Delete Update</h1>
+
+  <div class="alert alert-warning">
+    Are you sure you want to delete this update?
+    <br>
+    <strong>{{ update.update_date }}:</strong> {{ update.update_text }}
+  </div>
+
+  <form method="post">
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    {% if update.task_id %}
+      <a href="{{ url_for('task_detail', task_id=update.task_id) }}" class="btn btn-secondary">Cancel</a>
+    {% else %}
+      <a href="{{ url_for('subtask_detail', subtask_id=update.subtask_id) }}" class="btn btn-secondary">Cancel</a>
+    {% endif %}
+  </form>
+
+</body>
+</html>
