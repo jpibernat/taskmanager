@@ -20,6 +20,14 @@
         <li class="nav-item">
           <a class="nav-link {% if request.endpoint in ['users_list','add_user','edit_user'] %}active{% endif %}" href="{{ url_for('users_list') }}">Users</a>
         </li>
+        {% if current_user.is_authenticated and current_user.role == 'admin' %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('auth.manage_users') }}">Manage Users</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+        </li>
       </ul>
     </div>
   </div>

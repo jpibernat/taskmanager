@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Subtask Detail</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="../static/styles.css" rel="stylesheet">
 </head>
 <body class="container py-4">
@@ -26,27 +27,40 @@
     {% endif %}
   {% endwith %}
 
-  <!-- Subtask info -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <h3 class="card-title">{{ subtask.title }}</h3>
-      <p class="card-text"><strong>Description:</strong> {{ subtask.description }}</p>
+ <!-- Subtask info -->
+<div class="card mb-4">
+  <div class="card-body">
+    <h3 class="card-title">{{ subtask.title }}</h3>
+    <p class="card-text"><strong>Description:</strong> {{ subtask.description }}</p>
 
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><strong>Status:</strong> {{ subtask.status }}</li>
-        <li class="list-group-item"><strong>Due Date:</strong> {{ subtask.due_date }}</li>
-        <li class="list-group-item"><strong>Priority:</strong> {{ subtask.priority }}</li>
-        <li class="list-group-item"><strong>Assigned To:</strong> {{ subtask.assigned_name or "—" }}</li>
-      </ul>
-    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <strong>Status:</strong>
+        <span class="badge badge-status-{{ subtask.status|lower|replace(' ', '') }}">
+          {{ subtask.status }}
+        </span>
+      </li>
+      <li class="list-group-item"><strong>Start Date:</strong> {{ subtask.start_date }}</li>
+      <li class="list-group-item"><strong>Due Date:</strong> {{ subtask.due_date }}</li>
+      <li class="list-group-item">
+        <strong>Priority:</strong>
+        <span class="badge badge-priority-{{ subtask.priority|lower }}">
+          {{ subtask.priority }}
+        </span>
+      </li>
+      <li class="list-group-item"><strong>Owner:</strong> {{ subtask.owner_name or "—" }}</li>
+      <li class="list-group-item"><strong>Assigned To:</strong> {{ subtask.assigned_name or "—" }}</li>
+    </ul>
   </div>
+</div>
+
 
   <!-- Subtask actions -->
   <div class="mb-3">
-    <a href="{{ url_for('edit_subtask', subtask_id=subtask.subtask_id) }}" class="btn btn-warning">Edit Subtask</a>
-    <a href="{{ url_for('delete_subtask', subtask_id=subtask.subtask_id) }}" class="btn btn-danger">Delete Subtask</a>
-    <a href="{{ url_for('add_subtask_update', subtask_id=subtask.subtask_id) }}" class="btn btn-outline-primary">➕ Add Update</a>
-    <a href="{{ url_for('task_detail', task_id=subtask.parent_task_id) }}" class="btn btn-secondary">⬅ Back to Task</a>
+    <a href="{{ url_for('subtask.edit_subtask', subtask_id=subtask.subtask_id) }}" class="btn btn-warning">Edit Subtask</a>
+    <a href="{{ url_for('subtask.delete_subtask', subtask_id=subtask.subtask_id) }}" class="btn btn-danger">Delete Subtask</a>
+    <a href="{{ url_for('subtask.add_subtask_update', subtask_id=subtask.subtask_id) }}" class="btn btn-outline-primary">➕ Add Update</a>
+    <a href="{{ url_for('task.task_detail', task_id=subtask.parent_task_id) }}" class="btn btn-secondary">⬅ Back to Task</a>
   </div>
 
 <h2>Updates</h2>
@@ -58,14 +72,14 @@
         <div class="timeline-content p-3 border rounded bg-light">
           <div class="d-flex justify-content-between align-items-center">
             <span class="badge bg-primary">{{ upd.update_date }}</span>
-            {% if upd.username %}
-              <span class="badge bg-secondary">by {{ upd.username }}</span>
+            {% if upd.user_name %}
+              <span class="badge bg-secondary">by {{ upd.user_name }}</span>
             {% endif %}
           </div>
           <p class="mt-2 mb-0">{{ upd.update_text }}</p>
           <div class="mt-2">
-            <a href="{{ url_for('edit_update', update_id=upd.update_id) }}" class="btn btn-sm btn-warning">Edit</a>
-            <a href="{{ url_for('delete_update', update_id=upd.update_id) }}" class="btn btn-sm btn-danger">Delete</a>
+            <a href="{{ url_for('updates.edit_update', update_id=upd.update_id) }}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{{ url_for('updates.delete_update', update_id=upd.update_id) }}" class="btn btn-sm btn-danger">Delete</a>
           </div>
         </div>
       </div>
@@ -75,7 +89,7 @@
   <div class="alert alert-secondary">No updates yet.</div>
 {% endif %}
 
-<a href="{{ url_for('add_subtask_update', subtask_id=subtask.subtask_id) }}" class="btn btn-outline-primary">➕ Add Update</a>
+<a href="{{ url_for('subtask.add_subtask_update', subtask_id=subtask.subtask_id) }}" class="btn btn-outline-primary">➕ Add Update</a>
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

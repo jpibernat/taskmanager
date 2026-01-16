@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>User Management</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Change Role</th>
+        <th>Reset Password</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>{{ user.first_name }} {{ user.last_name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>
+          <form method="post" action="{{ url_for('auth.set_role', user_id=user.id) }}">
+            <select name="role" class="form-select form-select-sm">
+              <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
+              <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+            </select>
+            <button type="submit" class="btn btn-sm btn-primary mt-1">Update</button>
+          </form>
+        </td>
+        <td>
+          <form method="post" action="{{ url_for('auth.reset_password', user_id=user.id) }}">
+            <input type="password" name="new_password" placeholder="New password" class="form-control form-control-sm" required>
+            <button type="submit" class="btn btn-sm btn-warning mt-1">Reset</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

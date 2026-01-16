@@ -1,3 +1,81 @@
+/* Make the table container full width */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Ensure table uses full width */
+table.table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Prevent header filters from stacking */
+th {
+  vertical-align: top;
+  white-space: nowrap;
+  padding: 8px;
+}
+
+/* Compact input and select filters */
+th input.form-control-sm,
+th select.form-select-sm {
+  width: 100%;
+  min-width: 100px;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* Sort arrows spacing */
+.sort-arrow {
+  margin-left: 4px;
+  margin-right: 2px;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+/* Highlighted arrow */
+.sort-arrow-active {
+  color: #fd7e14;
+  font-weight: bold;
+}
+
+/* Responsive tweaks for smaller screens */
+@media (max-width: 768px) {
+  th input.form-control-sm,
+  th select.form-select-sm {
+    font-size: 0.75rem;
+  }
+
+  .sort-arrow {
+    font-size: 0.75rem;
+  }
+}
+
+/* Sticky header row */
+.table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa; /* Light background to match Bootstrap */
+  z-index: 2;
+  border-bottom: 2px solid #dee2e6;
+}
+
+/* Optional: add shadow when scrolling */
+.table thead th.sticky-shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Make action icons consistent */
+td a i {
+  font-size: 1rem;   /* adjust size */
+  cursor: pointer;
+}
+
+td a:hover i {
+  opacity: 0.7;      /* subtle hover effect */
+}
+
 .timeline {
   position: relative;
   margin-left: 30px;
@@ -33,4 +111,43 @@
 .task-link:hover, .subtask-link:hover {
   color: #0d6efd;          /* Bootstrap primary blue on hover */
   text-decoration: underline;
+}
+
+/* Status badges */
+
+.badge-status-notstarted { background-color: #6c757d; }   /* Gray */
+.badge-status-inprogress { background-color: #0d6efd; }   /* Blue */
+.badge-status-stuck { background-color: #dc3545; }        /* Red */
+.badge-status-planned { background-color: #6610f2; }      /* Purple */
+.badge-status-hypercare { background-color: #20c997; }    /* Teal */
+.badge-status-development { background-color: #fd7e14; }  /* Orange */
+.badge-status-done { background-color: #198754; }         /* Green */
+
+
+/* Priority badges */
+
+.badge-priority-low { background-color: #198754; }        /* Green */
+.badge-priority-medium { background-color: #ffc107; }     /* Amber */
+.badge-priority-high { background-color: #dc3545; }       /* Red */
+
+
+/* Type badges */
+
+.badge-type-project { background-color: #0d6efd; }        /* Blue */
+.badge-type-incident { background-color: #dc3545; }       /* Red */
+.badge-type-cip { background-color: #20c997; }            /* Teal */
+.badge-type-painpoint { background-color: #fd7e14; }      /* Orange */
+.badge-type-task { background-color: #6c757d; }           /* Gray */
+.badge-type-other { background-color: #adb5bd; }          /* Light gray */
+
+/* Custom style for active sort arrows */
+.sort-arrow-active {
+  color: #fd7e14;   /* Orange, choose any color you like */
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.sort-arrow {
+  color: #6c757d;   /* Neutral gray for inactive arrows */
+  text-decoration: none;
 }

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Task Detail</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="../static/styles.css" rel="stylesheet">
 </head>
 <body class="container py-4">
@@ -26,33 +27,51 @@
     {% endif %}
   {% endwith %}
 
-  <!-- Task info -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <h3 class="card-title">{{ task.title }}</h3>
-      <p class="card-text"><strong>Description:</strong> {{ task.description }}</p>
+ <!-- Task info -->
+<div class="card mb-4">
+  <div class="card-body">
+    <h3 class="card-title">{{ task.title }}</h3>
+    <p class="card-text"><strong>Description:</strong> {{ task.description }}</p>
 
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><strong>Status:</strong> {{ task.status }}</li>
-        <li class="list-group-item"><strong>Area:</strong> {{ task.area }}</li>
-        <li class="list-group-item"><strong>Type:</strong> {{ task.type }}</li>
-        <li class="list-group-item"><strong>Start Date:</strong> {{ task.start_date }}</li>
-        <li class="list-group-item"><strong>Due Date:</strong> {{ task.due_date }}</li>
-        <li class="list-group-item"><strong>Priority:</strong> {{ task.priority }}</li>
-        <li class="list-group-item"><strong>Ticket Number:</strong> {{ task.ticket_number }}</li>
-        <li class="list-group-item"><strong>Mantis Number:</strong> {{ task.mantis_number }}</li>
-        <li class="list-group-item"><strong>Owner:</strong> {{ task.owner_name or "—" }}</li>
-        <li class="list-group-item"><strong>Assigned To:</strong> {{ task.assigned_name or "—" }}</li>
-      </ul>
-    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <strong>Status:</strong>
+        <span class="badge badge-status-{{ task.status|lower|replace(' ', '') }}">
+          {{ task.status }}
+        </span>
+      </li>
+      <li class="list-group-item">
+        <strong>Area:</strong> {{ task.area }}
+      </li>
+      <li class="list-group-item">
+        <strong>Type:</strong>
+        <span class="badge badge-type-{{ task.type|lower|replace(' ', '') }}">
+          {{ task.type }}
+        </span>
+      </li>
+      <li class="list-group-item"><strong>Start Date:</strong> {{ task.start_date }}</li>
+      <li class="list-group-item"><strong>Due Date:</strong> {{ task.due_date }}</li>
+      <li class="list-group-item">
+        <strong>Priority:</strong>
+        <span class="badge badge-priority-{{ task.priority|lower }}">
+          {{ task.priority }}
+        </span>
+      </li>
+      <li class="list-group-item"><strong>Ticket Number:</strong> {{ task.ticket_number }}</li>
+      <li class="list-group-item"><strong>Mantis Number:</strong> {{ task.mantis_number }}</li>
+      <li class="list-group-item"><strong>Owner:</strong> {{ task.owner_name or "—" }}</li>
+      <li class="list-group-item"><strong>Assigned To:</strong> {{ task.assigned_name or "—" }}</li>
+    </ul>
   </div>
+</div>
+
 
   <!-- Task actions -->
   <div class="mb-3">
-    <a href="{{ url_for('edit_task', task_id=task.task_id) }}" class="btn btn-warning">Edit Task</a>
-    <a href="{{ url_for('delete_task', task_id=task.task_id) }}" class="btn btn-danger">Delete Task</a>
-    <a href="{{ url_for('add_subtask', task_id=task.task_id) }}" class="btn btn-primary">➕ Add Subtask</a>
-    <a href="{{ url_for('add_task_update', task_id=task.task_id) }}" class="btn btn-outline-primary">➕ Add Update</a>
+    <a href="{{ url_for('task.edit_task', task_id=task.task_id) }}" class="btn btn-warning">Edit Task</a>
+    <a href="{{ url_for('task.delete_task', task_id=task.task_id) }}" class="btn btn-danger">Delete Task</a>
+    <a href="{{ url_for('subtask.add_subtask', task_id=task.task_id) }}" class="btn btn-primary">➕ Add Subtask</a>
+    <a href="{{ url_for('task.add_task_update', task_id=task.task_id) }}" class="btn btn-outline-primary">➕ Add Update</a>
     <a href="{{ url_for('index') }}" class="btn btn-secondary">🏠 Home</a>
   </div>
 
@@ -66,14 +85,14 @@
         <div class="timeline-content p-3 border rounded bg-light">
           <div class="d-flex justify-content-between align-items-center">
             <span class="badge bg-primary">{{ upd.update_date }}</span>
-            {% if upd.username %}
-              <span class="badge bg-secondary">by {{ upd.username }}</span>
+            {% if upd.user_name %}
+              <span class="badge bg-secondary">by {{ upd.user_name }}</span>
             {% endif %}
           </div>
           <p class="mt-2 mb-0">{{ upd.update_text }}</p>
           <div class="mt-2">
-            <a href="{{ url_for('edit_update', update_id=upd.update_id) }}" class="btn btn-sm btn-warning">Edit</a>
-            <a href="{{ url_for('delete_update', update_id=upd.update_id) }}" class="btn btn-sm btn-danger">Delete</a>
+            <a href="{{ url_for('updates.edit_update', update_id=upd.update_id) }}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{{ url_for('updates.delete_update', update_id=upd.update_id) }}" class="btn btn-sm btn-danger">Delete</a>
           </div>
         </div>
       </div>
@@ -83,7 +102,7 @@
   <div class="alert alert-secondary">No updates yet.</div>
 {% endif %}
 
-<a href="{{ url_for('add_task_update', task_id=task.task_id) }}" class="btn btn-outline-primary">➕ Add Update</a>
+<a href="{{ url_for('task.add_task_update', task_id=task.task_id) }}" class="btn btn-outline-primary">➕ Add Update</a>
 
   <!-- Subtasks -->
   <h2>Subtasks</h2>
@@ -102,21 +121,30 @@
       <tbody>
         {% for sub in subtasks %}
           <tr>
-            <td>
-              <a href="{{ url_for('subtask_detail', subtask_id=sub.subtask_id) }}" class="subtask-link">
-                {{ sub.title }}
-              </a>
-            </td>
-            <td>{{ sub.status }}</td>
-            <td>{{ sub.due_date }}</td>
-            <td>{{ sub.priority }}</td>
-            <td>{{ sub.assigned_name or "—" }}</td>
-            <td>
-              <a href="{{ url_for('edit_subtask', subtask_id=sub.subtask_id) }}" class="btn btn-sm btn-warning">Edit</a>
-              <a href="{{ url_for('delete_subtask', subtask_id=sub.subtask_id) }}" class="btn btn-sm btn-danger">Delete</a>
-              <a href="{{ url_for('add_subtask_update', subtask_id=sub.subtask_id) }}" class="btn btn-sm btn-outline-primary">➕ Update</a>
-            </td>
+           <td>
+             <a href="{{ url_for('subtask.subtask_detail', subtask_id=sub.subtask_id) }}" class="subtask-link">
+               {{ sub.title }}
+             </a>
+           </td>
+           <td>
+             <span class="badge badge-status-{{ sub.status|lower|replace(' ', '') }}">
+               {{ sub.status }}
+             </span>
+           </td>
+           <td>{{ sub.due_date }}</td>
+           <td>
+             <span class="badge badge-priority-{{ sub.priority|lower }}">
+               {{ sub.priority }}
+             </span>
+           </td>
+           <td>{{ sub.assigned_name or "—" }}</td>
+           <td>
+             <a href="{{ url_for('subtask.edit_subtask', subtask_id=sub.subtask_id) }}" class="btn btn-sm btn-warning">Edit</a>
+             <a href="{{ url_for('subtask.delete_subtask', subtask_id=sub.subtask_id) }}" class="btn btn-sm btn-danger">Delete</a>
+             <a href="{{ url_for('subtask.add_subtask_update', subtask_id=sub.subtask_id) }}" class="btn btn-sm btn-outline-primary">➕ Update</a>
+           </td>
           </tr>
+
         {% endfor %}
       </tbody>
     </table>
