@@ -72,7 +72,7 @@ def index():
 
     # Base query
     query = """
-    SELECT t.task_id, t.title, t.status, t.priority, t.due_date,
+    SELECT t.task_id, t.title, t.status, t.priority, t.due_date, t.area, t.type, t.start_date, t.ticket_number, t.mantis_number,
            CONCAT(o.first_name, ' ', o.last_name) AS owner_name,
            CONCAT(a.first_name, ' ', a.last_name) AS assigned_name
     FROM tasks t
